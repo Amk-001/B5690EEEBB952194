@@ -1,0 +1,25 @@
+<VirtualHost *:80>
+    # Server Administrator အီးမေးလ်လိပ်စာ
+    ServerAdmin wayne.mm.92@gamil.com
+
+    # မူရင်း domain အမည်
+    ServerName mynetwork.com
+
+    # အခြား domain alias များ (ဥပမာ - www version)
+    ServerAlias www.mynetwork.com
+
+    # Website file များရှိသည့် directory
+    DocumentRoot /var/www/html
+
+    # DocumentRoot directory အတွက် လိုအပ်သည့် အခွင့်အရေးများ
+    <Directory /var/www/html>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    # Error Log file
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+
+    # Access Log file
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
