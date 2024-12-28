@@ -1,0 +1,43 @@
+name: Run Command on Remote Server and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout code
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Step 2: Set up SSH
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    # Step 3: Clone storage repo
+    - name: Clone Storage Repository
+      run: |
+        git clone https://github.com/Amk-001/-0.git /path/to/storage
+
+    # Step 4: Run remote commands
+    - name: Run Remote Command
+      run: |
+        sshpass -p "449530" ssh -o StrictHostKeyChecking=no mynetwork@192.168.1.11 << 'EOF'
+          # SSH into the server and run the necessary commands
+          cd /path/to/your/application  # Navigate to application directory
+          git pull origin main  # Pull latest code
+          # Add any other commands for your website
+          # Restart server or service if necessary
+          sudo systemctl restart apache2  # Example: Restart Apache web server
+        EOF
+
+    # Step 5: Test the website deployment (optional)
+    - name: Test Website Deployment
+      run: |
+        curl -I http://192.168.1.11:8080  # Test if the website is running
