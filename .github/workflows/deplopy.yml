@@ -1,4 +1,5 @@
 name: Deploy to Remote Server
+
 on:
   push:
     branches:
@@ -13,16 +14,16 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    # Step 2: Set Up SSH Access
-    - name: Set Up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    # Step 2: Install sshpass
+    - name: Install sshpass
+      run: sudo apt-get update && sudo apt-get install -y sshpass
 
     # Step 3: Deploy Code to Remote Server
     - name: Deploy to Server
+      env:
+        SSHPASS: ${{ secrets.SSH_PASSWORD }}
       run: |
-        sshpass -p "449530" ssh -o StrictHostKeyChecking=no mynetwork@192.168.1.11 << 'EOF'
+        sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP }} << 'EOF'
           # Step 3.1: Navigate to Web Root Directory
           cd /var/www/html
 
@@ -44,4 +45,4 @@ jobs:
     # Step 4: Test Website Deployment
     - name: Test Website Deployment
       run: |
-        curl -I http://192.168.1.11:8080
+        curl -I http://$${{ secrets.SSH_IP }}:8080
