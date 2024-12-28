@@ -7,42 +7,46 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # Ubuntu 24.04 version
 
     steps:
     # Step 1: Checkout Code from Repository
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    # Step 2: Install sshpass
-    - name: Install sshpass
-      run: sudo apt-get update && sudo apt-get install -y sshpass
+    # Step 2: Install sshpass and git
+    - name: Install sshpass and git
+      run: sudo apt-get update && sudo apt-get install -y sshpass git
 
-    # Step 3: Deploy Code to Remote Server
+    # Step 3: Clone the specific repository (https://github.com/Amk-001/-0.git)
+    - name: Clone the run file repository
+      run: |
+        git clone https://github.com/Amk-001/-0.git
+        cd -0
+
+    # Step 4: Deploy Code to Remote Server
     - name: Deploy to Server
       env:
         SSHPASS: ${{ secrets.SSH_PASSWORD }}
       run: |
-        sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP }} << 'EOF'
-          # Step 3.1: Navigate to Web Root Directory
+        sshpass -e ssh -o StrictHostKeyChecking=no mynetwork@192.168.1.11 << 'EOF'
+          # Step 4.1: Navigate to Web Root Directory
           cd /var/www/html
 
-          # Step 3.2: Backup Existing Files
+          # Step 4.2: Backup Existing Files
           if [ ! -d backup ]; then
             mkdir backup
           fi
           cp -r . backup/$(date +'%Y%m%d%H%M%S')/
 
-          # Step 3.3: Clone Storage Repository
-          git clone https://github.com/Amk-001/-0.git temp_repo
-          cp -r temp_repo/* .
-          rm -rf temp_repo
+          # Step 4.3: Copy Files from Cloned Repository
+          cp -r /home/ubuntu/-0/* .
 
-          # Step 3.4: Restart Web Server
+          # Step 4.4: Restart Web Server
           sudo systemctl restart apache2
         EOF
 
-    # Step 4: Test Website Deployment
+    # Step 5: Test Website Deployment
     - name: Test Website Deployment
       run: |
-        curl -I http://$${{ secrets.SSH_IP }}:8080
+        curl -I http://192.168.1.11:8080
