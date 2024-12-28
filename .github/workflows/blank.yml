@@ -1,4 +1,4 @@
-name: Run Command on Remote Server and Deploy
+name: Deploy to Remote Server
 
 on:
   push:
@@ -10,26 +10,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    # Step 1: Checkout Code from Repository
+    - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up SSH
+    # Step 2: Set Up SSH Access
+    - name: Set Up SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Clone Storage Repository
+    # Step 3: Deploy Code to Remote Server
+    - name: Deploy to Server
       run: |
-        git clone https://github.com/Amk-001/-0.git /path/to/storage
+        sshpass -p "449530" ssh -o StrictHostKeyChecking=no mynetwork@192.168.1.11 << 'EOF'
+          # Step 3.1: Navigate to Web Root Directory
+          cd /var/www/html
 
-    - name: Run Remote Command
-      run: |
-        ssh -o StrictHostKeyChecking=no mynetwork@192.168.1.11 << 'EOF'
-          cd /path/to/your/application  # Navigate to application directory
-          git pull origin main  # Pull latest code
-          sudo systemctl restart apache2  # Restart Apache server (or change to nginx if needed)
+          # Step 3.2: Backup Existing Files
+          if [ ! -d backup ]; then
+            mkdir backup
+          fi
+          cp -r . backup/$(date +'%Y%m%d%H%M%S')/
+
+          # Step 3.3: Clone Storage Repository
+          git clone https://github.com/Amk-001/-0.git temp_repo
+          cp -r temp_repo/* .
+          rm -rf temp_repo
+
+          # Step 3.4: Restart Web Server
+          sudo systemctl restart apache2
         EOF
 
+    # Step 4: Test Website Deployment
     - name: Test Website Deployment
       run: |
-        curl -I http://192.168.1.11:8080  # Test if the website is running
+        curl -I http://192.168.1.11:8080
