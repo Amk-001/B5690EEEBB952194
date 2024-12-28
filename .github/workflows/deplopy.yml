@@ -45,4 +45,4 @@ jobs:
     # Step 4: Test Website Deployment
     - name: Test Website Deployment
       run: |
-        curl -I http://$${{ secrets.SSH_IP }}:8080
+        curl -I mynetwork@192.168.1.11
