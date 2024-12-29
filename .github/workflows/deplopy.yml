@@ -4,45 +4,40 @@ on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout Code from Repository
-    - name: Checkout Repository
+    # Step 1: Checkout Repository
+    - name: Checkout Code
       uses: actions/checkout@v2
 
-    # Step 2: Install sshpass
-    - name: Install sshpass
-      run: sudo apt-get update && sudo apt-get install -y sshpass
+    # Step 2: Set Up SSH Key
+    - name: Set Up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    # Step 3: Deploy Code to Remote Server
+    # Step 3: Deploy Code to Server
     - name: Deploy to Server
-      env:
-        SSHPASS: ${{ secrets.SSH_PASSWORD }}
       run: |
-        sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP }} << 'EOF'
-          # Step 3.1: Navigate to Web Root Directory
+        ssh -o StrictHostKeyChecking=no mynetwork@192.168.1.11 << 'EOF'
+          # Navigate to web root
           cd /var/www/html
 
-          # Step 3.2: Backup Existing Files
+          # Backup existing files (optional)
           if [ ! -d backup ]; then
             mkdir backup
           fi
           cp -r . backup/$(date +'%Y%m%d%H%M%S')/
 
-          # Step 3.3: Clone Storage Repository
-          git clone https://github.com/Amk-001/-0.git temp_repo
-          cp -r temp_repo/* .
-          rm -rf temp_repo
+          # Pull the latest code from GitHub
+          git init
+          git remote add origin git@github.com:yourusername/your-repository.git
+          git fetch --all
+          git reset --hard origin/main
 
-          # Step 3.4: Restart Web Server
+          # Restart the web server (if applicable)
           sudo systemctl restart apache2
         EOF
-
-    # Step 4: Test Website Deployment
-    - name: Test Website Deployment
-      run: |
-        curl -I mynetwork@192.168.1.11
