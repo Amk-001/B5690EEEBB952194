@@ -4,4 +4,4 @@ curl --request POST
 
     --header 'Authorization: Bearer $CF_AUTH_TOKEN'  
 
-    --data '{"url":"","method":"GET"}'
+    --data '{"http://www.githnb.com/Amk-001/mynetwork/app":"","method":"GET"}'
