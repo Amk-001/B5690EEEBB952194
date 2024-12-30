@@ -1,0 +1,7 @@
+curl --request POST  
+
+    --url https://api.cloudflare.com/client/v4/accounts/dde33cad0571429f65d07c2ba6e51d8e/request-tracer/tracer     --header 'Content-Type: application/json'  
+
+    --header 'Authorization: Bearer $CF_AUTH_TOKEN'  
+
+    --data '{"url":"","method":"GET"}'
