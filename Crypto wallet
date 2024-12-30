@@ -1,0 +1,5 @@
+if (window.ethereum) {
+    ethereum.request({ method: 'eth_requestAccounts' }).then(accounts => {
+        console.log('Connected Account:', accounts[0]);
+    });
+}
