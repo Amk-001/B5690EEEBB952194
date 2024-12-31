@@ -1,1 +1,0 @@
-document.getElementById('chatSection').innerHTML = "<p>Welcome to the chat room!</p>";
