@@ -1,0 +1,7 @@
+const socket = io.connect('http://localhost:3000');
+
+socket.emit('send_message', { message: 'Hello' });
+
+socket.on('receive_message', function(data) {
+    console.log(data.message);
+});
