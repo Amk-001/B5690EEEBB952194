@@ -1,0 +1,27 @@
+my-social-network/
+│
+├── backend/               # Backend (Node.js, Express, Database)
+│   ├── app.js             # Main server file (Backend code)
+│   ├── models/            # MongoDB models (User, Chat)
+│   │   └── user.js        # User model
+│   │   └── chat.js        # Chat model
+│   └── routes/            # Routes for APIs (Register, Login, etc.)
+│       └── authRoutes.js  # Authentication Routes
+│       └── chatRoutes.js  # Chat Routes (Real-time chat)
+│
+├── frontend/              # Frontend (HTML, CSS, JavaScript)
+│   ├── index.html         # Homepage HTML template
+│   ├── style.css          # Styles for the website
+│   └── app.js             # Frontend JS (Real-time chat, Login)
+│
+├── config/                # Configuration files (Crypto wallet, Multi-language)
+│   ├── crypto.js          # Crypto wallet setup
+│   ├── language.js        # Multi-language configuration
+│   └── serverConfig.js    # Server configurations
+│
+├── database/              # MongoDB configuration and setup scripts
+│   └── init.js            # Initialize MongoDB connection
+│
+└── assets/                # Images, Emojis, GIFs
+    ├── emojis/            # Emoji images
+    └── gifs/              # GIF images

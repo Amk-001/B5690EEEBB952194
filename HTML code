@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Network</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #212121; /* Nero Color */
+            color: #fff;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+        }
+
+        .motion-text {
+            font-size: 24px;
+            text-align: center;
+            animation: textMotion 2s infinite;
+        }
+
+        @keyframes textMotion {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(30px); }
+            100% { transform: translateX(0); }
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .button {
+            background-color: #6200ea;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #3700b3;
+        }
+
+        .chat-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+
+        .chat-box {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            flex: 1;
+            margin: 5px;
+        }
+
+        .chat-box h3 {
+            text-align: center;
+            color: #fff;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #6200ea;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Social Network</h1>
+
+    <div class="motion-text">Connecting People Across the Globe</div>
+
+    <!-- Sign In / Sign Out -->
+    <div class="button-container">
+        <button class="button" id="signInButton">Sign In</button>
+        <button class="button hidden" id="signOutButton">Sign Out</button>
+    </div>
+
+    <!-- Registration -->
+    <div class="registration-container" style="display:none;">
+        <h2>Register</h2>
+        <input type="text" placeholder="Enter your username" class="input-field" id="username" /><br />
+        <input type="password" placeholder="Enter your password" class="input-field" id="password" /><br />
+        <button class="button" id="registerButton">Register</button>
+    </div>
+
+    <!-- Chat System -->
+    <div class="chat-container">
+        <!-- Private Chat -->
+        <div class="chat-box">
+            <h3>Private Chat</h3>
+            <textarea class="input-field" placeholder="Type a message..."></textarea>
+        </div>
+
+        <!-- Public Chat -->
+        <div class="chat-box">
+            <h3>Public Chat</h3>
+            <textarea class="input-field" placeholder="Join the conversation..."></textarea>
+        </div>
+
+        <!-- Group Chat -->
+        <div class="chat-box">
+            <h3>Group Chat</h3>
+            <textarea class="input-field" placeholder="Chat with your group..."></textarea>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Developed by <strong>Your Company</strong></p>
+    </div>
+
+    <script>
+        // Sign In / Sign Out functionality
+        document.getElementById("signInButton").addEventListener("click", function() {
+            alert("Signing in...");
+            document.getElementById("signInButton").style.display = "none";
+            document.getElementById("signOutButton").style.display = "inline-block";
+        });
+
+        document.getElementById("signOutButton").addEventListener("click", function() {
+            alert("Signing out...");
+            document.getElementById("signOutButton").style.display = "none";
+            document.getElementById("signInButton").style.display = "inline-block";
+        });
+
+        // Registration action
+        document.getElementById("registerButton").addEventListener("click", function() {
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            if (username && password) {
+                alert("Registration Successful!");
+                document.querySelector(".registration-container").style.display = "none";
+            } else {
+                alert("Please fill in all fields!");
+            }
+        });
+    </script>
+</body>
+</html>
