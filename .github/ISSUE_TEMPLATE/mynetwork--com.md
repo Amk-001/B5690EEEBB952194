@@ -1,9 +1,9 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
+name: Mynetwork. com
+about: 'Social app '
+title: 'Fix '
+labels: good first issue
+assignees: Amk-001
 
 ---
 
